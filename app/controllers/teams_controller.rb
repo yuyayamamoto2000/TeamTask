@@ -15,7 +15,11 @@ class TeamsController < ApplicationController
     @team = Team.new
   end
 
-  def edit; end
+  def edit
+    if @team.owner.id != current_user.id                 # 追加
+      redirect_to team_url, notice: I18n.t('views.messages.cannot_edit_other_member_except_leader')                 # 追加
+    end                 # 追加
+  end
 
   def create
     @team = Team.new(team_params)
